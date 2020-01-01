@@ -3,7 +3,6 @@
 [The Complete Node.js Developer Course](https://www.udemy.com/course/the-complete-nodejs-developer-course-2/)
 
 ### Node.js
-
 * import module
     
         const fs = require('fs');
@@ -19,9 +18,38 @@
         module.exports = varName;
         module.exports = funcName;
 
+* Get input from user
 
-### NPM
+        process.argv //returns an array of arguments
 
+        //parse the return of process.argv
+        const yargs = require('yargs');
+        //parse arguments according to the provided config
+        yargs.parse();
+
+        //config example
+        yargs.command({
+            command: 'add',
+            describe: 'Add a new note',
+            builder: {
+                    title: {
+                        describe: 'Note title',
+                        demandOption: true, //default: false
+                        type: 'string' //default: boolean
+                    },
+                    body: {
+                        describe: 'Note content',
+                        demandOption: true,
+                        type: 'string'
+                    }
+            },
+            handler: function(argv) {
+                console.log('Title: ' + argv.title);
+                console.log('Content: ' + argv.body);
+            }
+        });
+
+### npm
 * Initialization
 
         npm init
@@ -30,6 +58,18 @@
 
         npm install name
         npm i name@version
+
+        //check package-lock.json and install needed packages
+        npm install
+
+### nodemon
+nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
+        //install nodemon
+        npm install nodemon -g
+
+        //run script
+        nodemon app.js
 
 ### Reference
 * [Course Repo](https://links.mead.io/nodecourse)
