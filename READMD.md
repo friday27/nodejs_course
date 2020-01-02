@@ -2,7 +2,7 @@
 
 [The Complete Node.js Developer Course](https://www.udemy.com/course/the-complete-nodejs-developer-course-2/)
 
-### Node.js
+### Node.js/JS
 * import module
     
         const fs = require('fs');
@@ -17,6 +17,12 @@
     
         module.exports = varName;
         module.exports = funcName;
+
+        //exports more than 1 func
+        module.exports = {
+            getNotes: getNotes,
+            addNote: addNote
+        };
 
 * Get input from user
 
@@ -48,6 +54,37 @@
                 console.log('Content: ' + argv.body);
             }
         });
+
+* JSON
+
+        //convert JS object into JSON string
+        const bookJSON = JSON.stringify(objName);
+        fs.writeFileSync(JSONfilename, bookJSON);
+
+        //convert string into JSON data
+        const dataBuffer = fs.readFileSync(JSONfilename);
+        const data = JSON.parse(dataBuffer);
+
+* Array filter
+    
+        const duplicateNotes = notes.filter(function (note) {
+            return note.title === title
+        });
+
+* Arrow function
+
+        //original function
+        const square = function (n) {
+            return n * n;
+        };
+
+        //arrow function
+        const square = (n) => {
+            return n * n;
+        };
+
+        //simpler
+        const square = (n) => n * n;
 
 ### npm
 * Initialization
