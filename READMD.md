@@ -95,6 +95,17 @@
     2. Run script with inspect `node inspect app.js --title="aaa" --body="bbb"`
     3. Open chrome://inspect and you could test in the dev tool
 
+* Make HTTP request
+
+        const request = require('request');
+
+        const url = '...';
+
+        request({ url: url }, (error, response) => {
+            const data = JSON.parse(response.body);
+            console.log(data.);
+        });
+
 ### npm
 * Initialization
 
