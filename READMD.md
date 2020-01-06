@@ -86,6 +86,11 @@
         //simpler
         const square = (n) => n * n;
 
+* Debugging
+    1. Set `debugger;` in the script
+    2. Run script with inspect `node inspect app.js --title="aaa" --body="bbb"`
+    3. Open chrome://inspect and you could test in the dev tool
+
 ### npm
 * Initialization
 

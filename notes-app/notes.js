@@ -12,6 +12,8 @@ const addNote = (title, body) => {
     //use 'find' method so it will return once the title is found
     const duplicateNote = notes.find((note) => note.title === title);
 
+    debugger;
+
     // if(duplicateNotes.length === 0) {
     if(!duplicateNote) {
         notes.push({
