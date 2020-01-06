@@ -2,6 +2,9 @@
 
 [The Complete Node.js Developer Course](https://www.udemy.com/course/the-complete-nodejs-developer-course-2/)
 
+### TODOs
+* Skipped videos: 30
+
 ### Node.js/JS
 * import module
     
