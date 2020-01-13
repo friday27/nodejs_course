@@ -2,6 +2,7 @@
 
 ### TODOs
 * Review 29, 30
+* Watch skipped videos: 38
 
 ### Making HTTP Requests
 
