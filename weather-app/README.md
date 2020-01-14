@@ -53,3 +53,37 @@
             console.log('Error', error);
             console.log('Data', data);
         });
+
+### Express
+* Install
+
+        npm install express --save
+
+* app.js
+
+        const express = require('express');
+
+        // Create an Express application
+        const app = express();
+
+        // We can send back string, html and JSON
+        app.get('', (req, res) => {
+            res.send('<h1>Express</h1>');
+        });
+
+        // Express will automatically convert object to JSON
+        app.get('/help', (req, res) => {
+            res.send([{
+                name: 'Andrew',
+                age: 18
+            }, {
+                name: 'Tom'
+            }]);
+        });
+
+        // Start the server
+        // Access the app in browser by http://localhost:3000/
+        app.listen(3000, () => {
+            console.log('Server is up on port 3000.');
+        });
+

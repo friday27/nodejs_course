@@ -130,4 +130,4 @@ nodemon is a tool that helps develop node.js based applications by automatically
 
 ### Reference
 * [Course Repo](https://links.mead.io/nodecourse)
-* [Node.js Doc](https://nodejs.org)
+* [Node.js Doc](https://nodejs.org/api/)
