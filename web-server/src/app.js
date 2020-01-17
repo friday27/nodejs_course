@@ -47,11 +47,28 @@ app.get('/help', (req, res) => {
     });
 });
 
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Lily Potter',
+        errorMessage: 'Help article not found.'
+    });
+});
+
 app.get('/weather', (req, res) => {
     res.send({
         location: 'Xindian',
         forecast: 'snowy'
     });
+});
+
+//Everything that isn't listed above
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Lily Potter',
+        errorMessage: 'Page not found.'
+    })
 });
 
 // Start the server

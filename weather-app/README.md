@@ -2,7 +2,7 @@
 
 ### TODOs
 * Review 29, 30
-* Watch skipped videos: 38
+* Watch skipped videos: 38, 50
 
 ### Making HTTP Requests
 
@@ -99,8 +99,8 @@
         //npm i hbs
         app.set('view engine', 'hbs');
 
-        //create an index.hbs file under views/
-        app.get('', (req, res) => {
+        //after creating an index.hbs file under views/
+        app.get('', (req, res) => { //'' = view name
             //render one of the views
             // param1: name of the view
             // param2: data obj which can be fetched by .hbs
