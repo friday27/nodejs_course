@@ -28,8 +28,12 @@ const product = {
 // console.log(rating);
 
 // destructure the object in parameter list
-const transaction = (type, {label, stock}) => {
+const transaction = (type, {label, stock = 0} = {}) => {
     console.log(type, label, stock);
 };
 
-transaction('order', product);
+transaction('order'); 
+//If to default param, it will cause TypeError.
+//TypeError: Cannot destructure property `label` of 'undefined' or 'null'.
+
+// transaction('order', product);
