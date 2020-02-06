@@ -5,6 +5,8 @@
 ### TODOs
 * To review
     * 30. Call Stack, Callback Queue and Event Loop
+    * 65. Setting up SSH keys
+* Install Heroku CLI
 
 ### Node.js/JS
 * import module
@@ -119,6 +121,24 @@
         //check package-lock.json and install needed packages
         npm install
 
+        //install the package as a dev dependency
+        npm install name --save-dev
+
+* Uninstall package
+
+        npm uninstall name
+
+        //uninstall the package from global env
+        npm uninstall -g name
+
+* Add self-defined command into package.json (Run by `npm run dev`)
+
+        "scripts": {
+            "dev": "nodemon src/app.js -e js,hbs"
+        },
+
+        * Uninst
+
 ### nodemon
 nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 
@@ -127,6 +147,29 @@ nodemon is a tool that helps develop node.js based applications by automatically
 
         //run script
         nodemon app.js
+
+### Deploying Node.js to Heroku (using Heroku CLI)
+1. `heroku login`
+2. `heroku keys:add` adds the public ssh key to heroku account
+3. `heroku create <project_name>`
+4. Update package.json
+
+        "scripts": {
+            //Tell Heroku what to do to start up the application
+            "start": "node src/app.js"
+        }
+
+5. Run `npm run start` to test the change
+6. Update **port** in src/app.js
+    
+        const port = process.env.PORT || 3000;
+
+        app.listen(port, () => {
+            //...
+        });
+
+7. Push the changes to GitHub and Heroku
+8. Check the result through Heroku URL
 
 ### Reference
 * [Course Repo](https://links.mead.io/nodecourse)
