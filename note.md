@@ -138,27 +138,78 @@
         db.version()
 
 
-* Install mongodb module for Node.js
+* Install [mongodb module](https://mongodb.github.io/node-mongodb-native/2.0/api/index.html) for Node.js
 
         npm i mongodb
 
-* CRUD operations (mongodb.js)
+#### CRUD operations (mongodb.js)
 
         const mongodb = require('mongodb');
-        const MongoClient = mongodb.MongoClient;
+            const MongoClient = mongodb.MongoClient;
 
-        const connectionURL = 'mongodb://127.0.0.1:27018';
-        const databaseName = 'task-manager';
+            const connectionURL = 'mongodb://127.0.0.1:27018';
+            const databaseName = 'task-manager';
 
-        MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
-            if (error) {
-                return console.log('Unable to connect to database!');
-            }
+            MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
+                if (error) {
+                    return console.log('Unable to connect to database!');
+                }
 
-            //MongoDB will create the db if not exists
-            const db = client.db(databaseName); 
-            db.collection('users').insertOne({
-                name: 'Lily',
-                age: 13
-            });
+                //MongoDB will create the db if not exists
+                const db = client.db(databaseName); 
+
+                //CRUD operations...
         });
+
+* [insertOne](https://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#insertOne)
+
+        db.collection('users').insertOne({
+            name: 'Lily',
+            age: 13
+        });
+
+* insertMany
+
+        db.collection('users').insertMany([
+            {
+                name: 'Jane',
+                age: 28
+            }, {
+                name: 'Ross',
+                age: 27
+            }
+        ], (error, result) => {
+            if (error) {
+                return console.log('Unable to insert documents!');
+            }
+            console.log(result.ops);
+        });
+
+* ObjectID
+
+        //import ObjectID from mongodb module
+        const {MongoClient, ObjectID} = require('mongodb');
+
+        //generate a new ID
+        const id = new ObjectID();
+        console.log(id);
+        console.log(id.getTimestamp());
+
+* findOne and find
+
+        db.collection('tasks').findOne({_id: new ObjectID('5e4bb3d487b1226d59221fdd')}, (error, result) => {
+            console.log(result);
+        });
+
+        //find returns a cursor
+        db.collection('users').find({name: 'Lily'}).toArray((error, result) => {
+            console.log(result);
+        });
+
+        //replace toArray with count to get the length
+        db.collection('users').find({name: 'Lily'}).count((error, result) => {
+            console.log(result);
+        });
+
+
+
