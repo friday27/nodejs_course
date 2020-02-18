@@ -1,4 +1,15 @@
-# Course Note
+# Note
+
+### TODOs
+* Learn how to write unit tests for the practical tasks
+* How to use web socket
+* [Learn GraphQL](https://www.udemy.com/course/graphql-bootcamp/)
+* Knwoledge of web servers (Apache, Nginx)
+
+* Create RESTfull APIs
+* Make and distribute some packages/libraries
+* Learn a search engine (Solr, ElasticSearch)
+* How to user docker
 
 
 ### Cores
@@ -12,11 +23,11 @@
 * Angular
 
 
-### NPM
-* Create a new Node.js project
+### Before you start...
+* Install NPM, NodeJS Package Manager
+    * Use npm to install NodeJS modules
 
-        // go to the newly created project folder
-        npm init -y
+            npm init -y
 
 
 ### app.js
