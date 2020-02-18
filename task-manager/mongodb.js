@@ -1,4 +1,4 @@
-//CRUD operations practice
+//CRUD (Create Read Update Delete) operations practice
 
 // const mongodb = require('mongodb');
 // const MongoClient = mongodb.MongoClient;
@@ -21,25 +21,12 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
     }
     const db = client.db(databaseName); 
 
-    // //findOne
-    // db.collection('users').findOne({name: 'Jane'}, (error, result) => {
-    //     if (error) {
-    //         return console.log('Unable to fetch.');
-    //     }
-    //     console.log(result); //return null if no result
-    // });
-
-    // //find returns a cursor
-    // db.collection('users').find({name: 'Lily'}).toArray((error, result) => {
-    //     console.log(result);
-    // });
-
-    db.collection('tasks').findOne({_id: new ObjectID('5e4bb3d487b1226d59221fdd')}, (error, result) => {
+    db.collection('tasks').deleteOne({
+        description: 'PR'
+    }).then((result) => {
         console.log(result);
-    });
-
-    db.collection('tasks').find({completed: false}).toArray((error, result) => {
-        console.log(result);
+    }).catch((error) => {
+        console.log(error);
     });
 });
 

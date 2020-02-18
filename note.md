@@ -23,6 +23,16 @@
 * Angular
 
 
+### Basic Concepts
+* [JSON](playground/1-json.js)
+* Arror function [1](playground/2-arror-function.js) [2](playground/3-arror-challenge.js)
+* [Callback](playground/callack.js)
+* [ES6 objects](playground/es6-object.js)
+* [Raw HTTP](playground/raw-http.js)
+* [Default parameter](playground/default-param.js)
+* [Promises](playground/8-promises.js)
+
+
 ### Before you start...
 * Install NPM, NodeJS Package Manager
     * Use npm to install NodeJS modules
@@ -161,14 +171,12 @@
                 //CRUD operations...
         });
 
-* [insertOne](https://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#insertOne)
+* [insertOne](https://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#insertOne) and insertMany
 
         db.collection('users').insertOne({
             name: 'Lily',
             age: 13
         });
-
-* insertMany
 
         db.collection('users').insertMany([
             {
@@ -211,5 +219,42 @@
             console.log(result);
         });
 
+* [updateOne and updateMany](https://docs.mongodb.com/manual/reference/operator/update/)
+        
+        //updateOne returns a promise if no callback passed
+        db.collection('users').updateOne({
+            _id: new ObjectID('5e4942f6e5b9e0531775390b')
+        }, {
+            $inc: { //MongoDB update operator
+                age: -5
+            }
+        }).then((result) => {
+            console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        });
 
+        db.collection('tasks').updateMany({
+            completed: true
+        }, {
+            $set: {
+                completed: false
+            }
+        }).then((result) => {
+            console.log(result.modifiedCount);
+        }).catch((error) => {
+            console.log(error);
+        });
 
+* [deleteOne and deleteMany]()
+
+        db.collection('users').deleteOne({
+            name: 'Lily'
+        }).then((result) => {
+            console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        
+        
