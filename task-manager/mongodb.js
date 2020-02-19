@@ -21,12 +21,5 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
     }
     const db = client.db(databaseName); 
 
-    db.collection('tasks').deleteOne({
-        description: 'PR'
-    }).then((result) => {
-        console.log(result);
-    }).catch((error) => {
-        console.log(error);
-    });
 });
 
