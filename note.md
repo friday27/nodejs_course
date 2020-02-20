@@ -286,3 +286,72 @@
         }).catch((error) => {
             console.log('Error!', error);
         });
+
+#### [Data validation and sanitization](https://mongoosejs.com/docs/schematypes.html)
+
+        const User = mongoose.model('User', {
+            name: {
+                type: String,
+                required: true,
+                trim: true
+            },
+            age: {
+                type: Number,
+                default: 0,
+                //custom validator for a field
+                validate(value) { //value -> the input of age
+                    if (value < 0) {
+                        throw new Error('Age must be a postive number!');
+                    }
+                }
+            },
+            email: {
+                type: String,
+                required: true,
+                trim: true,
+                lowercase: true,
+                validate(value) {
+                    //use validator module
+                    if (!validator.isEmail(value)) {
+                        throw new Error('Email is invalid.');
+                    }
+                }
+            },
+            password: {
+                type: String,
+                required: true,
+                minlength: 7,
+                trim: true,
+                validate(value) {
+                    if (value.toLowerCase().includes('password')) {
+                        throw new Error('Do not use "password" in password.');
+                    }
+                }
+            }
+        });
+
+### RESTful API (Representational State Transfer - Application Programming Interface)
+
+The REST API allows client such as web application to access and manipulate resources using a set of predefined operations.
+
+Reprsentational - working with representations of the data stored in database
+State Transfer - the state has been transfer from the server to the client
+
+* HTTP methonds and CRUD operations
+    * Create - POST
+    * Read - GET
+    * Update - PATCH
+    * Delete - DELETE
+
+* The structure of a HTTP request is text-based.
+    1. Request line **HTTP method, /path, HTTP protocal**
+    2. Headers (Accept, Connection, Auth...)
+    3. Provided data
+    
+![Example Request](./img/request.png)
+
+* HTTP Response
+    1. Statue line **HTTP protocal, Status code, Text representation of the status code**
+    2. Headers
+
+![Example Response](./img/response.png)
