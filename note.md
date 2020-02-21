@@ -335,6 +335,7 @@
 The REST API allows client such as web application to access and manipulate resources using a set of predefined operations.
 
 Reprsentational - working with representations of the data stored in database
+
 State Transfer - the state has been transfer from the server to the client
 
 * HTTP methonds and CRUD operations
@@ -355,3 +356,6 @@ State Transfer - the state has been transfer from the server to the client
     2. Headers
 
 ![Example Response](./img/response.png)
+
+* Use [Postman](https://www.postman.com/) for API testing
+

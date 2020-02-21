@@ -6,7 +6,7 @@
 * To review
     * 30. Call Stack, Callback Queue and Event Loop
     * 65. Setting up SSH keys
-* Install Heroku CLI
+* Create gitbook (notes)
 
 ### Node.js/JS
 * import module
