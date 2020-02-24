@@ -338,6 +338,8 @@ Reprsentational - working with representations of the data stored in database
 
 State Transfer - the state has been transfer from the server to the client
 
+* [Course code](task-manager/)
+
 * HTTP methonds and CRUD operations
     * Create - POST
     * Read - GET
@@ -358,4 +360,7 @@ State Transfer - the state has been transfer from the server to the client
 ![Example Response](./img/response.png)
 
 * Use [Postman](https://www.postman.com/) for API testing
+
+* Check [HTTP status code](https://httpstatuses.com/)
+
 
