@@ -1,31 +1,17 @@
-// //callback function
-// const doWorkCallback = (callback) => {
-//     setTimeout(() => {
-//         callback(undefined, [1,2,7]);
-//     }, 2000);
-// };
+const add = (a, b) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(a + b);
+        }, 2000);
+    });
+};
 
-// doWorkCallback((error, result) => {
-//     if (error) {
-//         return console.log(error);
-//     }
-//     console.log(result);
-// });
-
-//usually created by library
-//If things went well, use resolve function, otherwise reject function.
-const doWorkPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve([7,2,1]);
-        // reject('Thins went wrong!');
-        // resolve([9,9,9]); //won't be executed
-    }, 2000)
-});
-
-//resolve -> then
-//reject -> catch
-doWorkPromise.then((result) => {
-    console.log('Success!', result);
-}).catch((error) => {
-    console.log('Error!', error);
+//promise chaining
+add(1, 2).then((sum) => {
+    console.log(sum);
+    return add(sum, 4);
+}).then((sum2) => { //catch the return in the first then()
+    console.log(sum2);
+}).catch((e) => {
+    console.log(e);
 });

@@ -125,3 +125,25 @@
             const data = JSON.parse(response.body);
             console.log(data.);
         });
+
+#### Promise Chaining = return + multiple then()
+
+        User.findByIdAndUpdate('5e4e32885e800c75faab5548', {age: 1}).then((user) => {
+            console.log(user);
+            return User.countDocuments({age: 1});
+        }).then((result) => {
+            console.log(result);
+        }).catch((e) => {
+            console.log(e);
+        });
+
+#### Async Function and Await Operator [playground](../playground/9-async-await.js)
+* async functions always return a promise, which is fulfilled with the value you choose to return from the function.
+* pro: having values in the same scope (more flexible)
+
+        const doWork = async () => {
+            const sum = await add(1, 99);
+            const sum2 = await add(sum, 50);
+            const sum3 = await add(sum2, -3);
+            return sum3;
+        };

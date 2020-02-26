@@ -4,7 +4,9 @@
 * To review
     * 30. Call Stack, Callback Queue and Event Loop
     * 65. Setting up SSH keys
-    
+    * [Mongoose API Doc](https://mongoosejs.com/docs/api.html)
+    * Google style sheet
+
 * Create gitbook (notes)
 
 * Codelab
