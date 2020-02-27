@@ -29,4 +29,9 @@ State Transfer - the state has been transfer from the server to the client
 
 * Use [Postman](https://www.postman.com/) for API testing
 
-* Check [HTTP status code](https://httpstatuses.com/)
+* [HTTP status code](https://httpstatuses.com/)
+    * 200 - OK
+    * 201 - created
+    * 400 - bad request
+    * 404 - not found
+    * 500 - internal server error
