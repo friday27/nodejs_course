@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-// create and User model
-// {'name for your model', {definition}}
-// Mongoose provides a basic type validation
-const User = mongoose.model('User', {
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -23,6 +22,7 @@ const User = mongoose.model('User', {
     },
     email: {
         type: String,
+        unique: true, //guarantee login uniqueness
         required: true,
         trim: true,
         lowercase: true,
@@ -43,8 +43,58 @@ const User = mongoose.model('User', {
                 throw new Error('Do not use "password" in password.');
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String, 
+            required: true
+        }
+    }]
 });
+
+//instance method
+userSchema.methods.generateAuthToken = async function() {
+    const user = this;
+    const token = jwt.sign({_id: user._id.toString()}, 'thisismynewcourse');
+    user.tokens = user.tokens.concat({token});
+    await user.save();
+    return token;
+};
+
+//define login validation function
+//model method (acceptable on the model)
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({email});
+    if (!user) {
+        throw new Error('Unable to login.');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        throw new Error('Unable to login.');
+    }
+    return user;
+};
+
+//User middleware of mongoose
+//define a function to be excuted before the 'save' event
+//Hash the plain text password before saving
+userSchema.pre('save', async function(next) {
+    //this -> the document to be saved
+    const user = this;
+
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8);
+    }
+
+    next(); //end of the function
+});
+
+// create and User model
+// {'name for your model', {definition}}
+// Mongoose provides a basic type validation
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
 
 // //model instance
 // const me = new User({
@@ -59,5 +109,3 @@ const User = mongoose.model('User', {
 // }).catch((error) => {
 //     console.log('Error!', error);
 // });
-
-module.exports = User;
