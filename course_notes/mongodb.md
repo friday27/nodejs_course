@@ -1,6 +1,7 @@
 # [MongoDB](https://docs.mongodb.com/)
 
-### MongoDB
+## MongoDB
+
 * SQL v.s NoSQL terms
 
         +------------+------------+
@@ -11,7 +12,7 @@
         | Column     | Field      |
         +------------+------------+
 
-*  Install [mongodb module](https://mongodb.github.io/node-mongodb-native/2.0/api/index.html) for Node.js
+* Install [mongodb module](https://mongodb.github.io/node-mongodb-native/2.0/api/index.html) for Node.js
 
         npm i mongodb
 
@@ -93,7 +94,7 @@
         });
 
 #### [updateOne and updateMany](https://docs.mongodb.com/manual/reference/operator/update/)
-        
+
         //updateOne returns a promise if no callback passed
         db.collection('users').updateOne({
             _id: new ObjectID('5e4942f6e5b9e0531775390b')

@@ -2,61 +2,65 @@
 
 JS module to use: bcryptjs
 
-### Hash Algorithm
+## Hash Algorithm
+
 bcrypt.hash('password', times);
 
-        const bcrypt = require('bcryptjs');
-        const password = 'red12345!';
-        const hashedPassword = await bcrypt.hash(password, 8); 
-        //8 means to execute the hash function for 8 times
+    const bcrypt = require('bcryptjs');
+    const password = 'red12345!';
+    const hashedPassword = await bcrypt.hash(password, 8); 
+    //8 means to execute the hash function for 8 times
 
-        //Hash algorithms are one direction algorithm, not reversible by design, unlike encrypt algorithm.
-        const isMatch = await bcrypt.compare(password, hashedPassword);
-        console.log(isMatch);
+    //Hash algorithms are one direction algorithm, not reversible by design, unlike encrypt algorithm.
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    console.log(isMatch);
 
-### Password Validation
+## Password Validation
+
 src/models/user.js
 
-        //User middleware of mongoose
-        //define a function to be excuted before the 'save' event
-        userSchema.pre('save', async function(next) {
-            //this -> the document to be saved
-            const user = this;
+    //User middleware of mongoose
+    //define a function to be excuted before the 'save' event
+    userSchema.pre('save', async function(next) {
+        //this -> the document to be saved
+        const user = this;
 
-            if (user.isModified('password')) {
-                user.password = await bcrypt.hash(user.password, 8);
-            }
+        if (user.isModified('password')) {
+            user.password = await bcrypt.hash(user.password, 8);
+        }
 
-            next(); //end of the function
-        });
+        next(); //end of the function
+    });
 
-### Login Validation
+## Login Validation
+
 src/models/user.js (define validation function)
 
-        userSchema.statics.findByCredentials = async (email, password) => {
-            const user = await User.findOne({email});
-            if (!user) {
-                throw new Error('Unable to login.');
-            }
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                throw new Error('Unable to login.');
-            }
-            return user;
-        };
+    userSchema.statics.findByCredentials = async (email, password) => {
+        const user = await User.findOne({email});
+        if (!user) {
+            throw new Error('Unable to login.');
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            throw new Error('Unable to login.');
+        }
+        return user;
+    };
 
 src/routers/user.js
 
-        router.post('/users/login', async (req, res) => {
-            try {
-                const user = await User.findByCredentials(req.body.email, req.body.password);
-                res.send(user);
-            } catch (e) {
-                res.status(400).send();
-            }
-        });
+    router.post('/users/login', async (req, res) => {
+        try {
+            const user = await User.findByCredentials(req.body.email, req.body.password);
+            res.send(user);
+        } catch (e) {
+            res.status(400).send();
+        }
+    });
 
-### JWT, JSON Web Token
+## JWT, JSON Web Token
+
 * JWTs provide a nice system for issuing and validating authentication tokens.
 
 * The authentication token will ensure that the client doesn’t need to log in every time they want to perform an operation on the server.
@@ -85,35 +89,37 @@ src/routers/user.js
 
         const token = await user.generateAuthToken()
 
-### [Express Middleware](http://expressjs.com/th/guide/using-middleware.html)
+## [Express Middleware](http://expressjs.com/th/guide/using-middleware.html)
+
 * Without middleware: new request -> run route handler
 * With middleware: new request -> do something -> run route handler
-* Middleware functions should accept three parameters: req, res, and next. 
+* Middleware functions should accept three parameters: req, res, and next.
 * **next** is called to signal to Express that the middleware function is done.
 * Example: different kinds of middleware functions: index.js
 
-        //register a new middleware function to run
-        app.use((req, res, next) => {
-            if (req.method == 'GET') {
-                res.send('GET requests are disable.');
-            } else {
-                next();
-            }
-        });
+      //register a new middleware function to run
+      app.use((req, res, next) => {
+        if (req.method == 'GET') {
+          res.send('GET requests are disable.');
+        } else {
+          next();
+        }
+      });
 
-        //maintenance message
-        app.use((req, res, next) => {
-            res.status(503).send('The website is under maintenance...\nPlease try back soon.');
-        });
+      //maintenance message
+      app.use((req, res, next) => {
+          res.status(503).send('The website is under maintenance...\nPlease try back soon.');
+      });
 
-        const loggerMiddleware = (req, res, next) => {
-            console.log('New request to: ' + req.method + ' ' + req.path);
-            next();
-        };
-        // Register the function as middleware for the application
-        app.use(loggerMiddleware);
+      const loggerMiddleware = (req, res, next) => {
+        console.log('New request to: ' + req.method + ' ' + req.path);
+        next();
+      };
+      // Register the function as middleware for the application
+      app.use(loggerMiddleware);
 
-### Accept Auth Token
+## Accept Auth Token
+
 * middleware/auth.js
 
         const jwt = require('jsonwebtoken');
