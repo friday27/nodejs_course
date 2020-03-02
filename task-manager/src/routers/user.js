@@ -53,23 +53,8 @@ router.get('/users/me', auth, async(req, res) => {
     res.send(req.user);
 });
 
-//get user by ID
-router.get('/users/:id', async (req, res) => {
-    //mongoose automatically converts String id to Object id
-    const _id = req.params.id;
-    try {
-        const user = await User.findById(_id);
-        if (!user) {
-            return res.status(404).send();
-        }
-        res.send(user);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
-
 //PATCH HTTP method was designed for updating the existing resource
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     //make sure every single update is in allowedUpdates
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name', 'email', 'password', 'age'];
@@ -82,25 +67,23 @@ router.patch('/users/:id', async (req, res) => {
     try {
         //replace it to make sure mongoose middleware works properly
         // const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
-        const user = await User.findById(req.params.id);
-        updates.forEach((update) => user[update] = req.body[update]);
-        await user.save();
-
-        if (!user) {
-            return res.status(404).send();
-        }
-        res.send(user);
+        updates.forEach((update) => req.user[update] = req.body[update]);
+        await req.user.save();
+        res.send(req.user);
     } catch (e) {
         res.send(400).send(e);
     }
 });
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).send();
-        }
+        // const user = await User.findByIdAndDelete(req.user._id);
+
+        // if (!user) {
+        //     return res.status(404).send();
+        // }
+        
+        await req.user.remove();
         res.send(user);
     } catch (e) {
         res.status(400).send(e);

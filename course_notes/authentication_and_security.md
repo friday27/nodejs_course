@@ -155,3 +155,49 @@ src/routers/user.js
         router.get('/users/me', auth, async (req, res) => {
             res.send(req.user)
         })
+
+## Hide Private Data
+
+When a Mongoose document is passed to **res.send()**, Mongoose converts the object into JSON. You can customize this by adding **toJSON()** as a method on the object.
+  
+      // src/routers/user.js
+      res.send({user, token});
+
+      // src/models/user.js
+      userSchema.methods.toJSON = function() {
+        const user = this;
+        const userObj = user.toObject();
+
+        delete userObj.password;
+        delete userObj.tokens;
+
+        return userObj;
+      };
+
+## The Task/User Relationship
+
+* Add a new **owner** field in Task model and set ref to 'User'
+
+      owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+      }
+
+* Add a virtual property in User model
+
+      userSchema.virtual('tasks', {
+        ref: 'Task',
+        localField: '_id',
+        foreignField: 'owner'
+      });
+
+* With the relationship configured, tasks can be created with an owner value using populate().
+
+      const task = await Task.findById('5c2e505a3253e18a43e612e6');
+      await task.populate('owner').execPopulate();
+      console.log(task.owner);
+
+      const user = await User.findById('5c2e4dcb5eac678a23725b5b');
+      await user.populate('tasks').execPopulate();
+      console.log(user.tasks);

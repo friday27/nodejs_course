@@ -1,9 +1,14 @@
 const express = require('express');
 const router = new express.Router();
+const auth = require('../middleware/auth');
 const Task = require('../models/task');
 
-router.post('/tasks', async (req, res) => {
-    const task = new Task(req.body);
+router.post('/tasks', auth, async (req, res) => {
+    // const task = new Task(req.body);
+    const task = new Task({
+        ...req.body, //copy all elements in req.body (ES6)
+        owner: req.user._id
+    });
 
     try {
         await task.save();
