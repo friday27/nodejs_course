@@ -1,4 +1,4 @@
-# [MongoDB](https://docs.mongodb.com/)
+# [MongoDB](https://docs.mongodb.com/) and [Mongoose](https://mongoosejs.com/)
 
 ## MongoDB
 
@@ -23,8 +23,6 @@
 * [MongoDB GUI Viewer - Robo 3T](https://robomongo.org/download): Use JavaScript to manipulate MongoDB data
 
         db.version()
-
------
 
 ### CRUD operations (mongodb.js)
 
@@ -140,7 +138,7 @@
 
 -----
 
-### [Mongoose](https://mongoosejs.com/)
+## [Mongoose](https://mongoosejs.com/)
 
         //mongoose uses mongodb module
         const mongoose = require('mongoose');
@@ -176,7 +174,7 @@
             console.log('Error!', error);
         });
 
-#### [Data validation and sanitization](https://mongoosejs.com/docs/schematypes.html)
+## [Data validation and sanitization](https://mongoosejs.com/docs/schematypes.html)
 
         const User = mongoose.model('User', {
             name: {
@@ -218,3 +216,17 @@
                 }
             }
         });
+
+## Sorting, Pagination, and Filtering
+
+sorting, filtering, and pagination are advanced techniques for fetching data, which keep applications fast, as they don’t need to fetch unnecessary data.
+
+### Using timestamp
+
+Simply set timestamps option of schema to true:
+
+    const userSchema = new mongoose.Schema({
+        // ...
+    }, {
+        timestamps: true
+    });

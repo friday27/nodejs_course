@@ -201,3 +201,13 @@ When a Mongoose document is passed to **res.send()**, Mongoose converts the obje
       const user = await User.findById('5c2e4dcb5eac678a23725b5b');
       await user.populate('tasks').execPopulate();
       console.log(user.tasks);
+
+## Cascade Delete Task
+
+To automatically delete tasks when the user is removed, we only need to add a middleware function.
+
+    userSchema.pre('remove', async function(next) {
+      const user = this;
+      await Task.deleteMany({owner: user._id});
+      next();
+    });
