@@ -125,17 +125,72 @@
 * Filter
 
       const duplicateNotes = notes.filter(function (note) {
-        return note.title === title
+        return note.title === title;
       });
 
 ## Callback [playground](playground/4-callack.js)
 
+A callback function is a function that’s **passed as an argument to another function**.
+
+    const geocode = (address, callback) => { 
+      setTimeout(() => {
+        const data = { 
+          latitude: 0, 
+          longitude: 0
+        }
+        callback(data);
+      }, 2000);
+    };
+      
+    geocode('Philadelphia', (data) => { 
+      console.log(data);
+    });
+
 ## ES6 objects [playground](playground/5-es6-objects.js)
 
-* Shorthand syntax
+* Property shorthand
+
+      const user = { 
+        name,
+        age: userAge,
+        location: 'Philadelphia' 
+      }
+
 * Object destructuring
 
+      const user = {
+        name: 'Andrew',
+        age: 27,
+        location: 'Philadelphia'
+      };
+
+      // The line below uses destructuring
+      const {age, location:address} = user;
+      console.log(address);
+
 ## Raw HTTP [playground](playground/6-raw-http.js)
+
+    // 2 core modules for making HTTP requests: http, https
+    const https = require('https');
+
+    const url = 'https://api.darksky.net/forecast/9d1465c6f3bb7a6c71944bdd8548d026/40,-75';
+
+    const request = https.request(url, (response) => { 
+      let data = '';
+      response.on('data', (chunk) => { 
+        data = data + chunk.toString();
+      });
+
+      response.on('end', () => {
+        const body = JSON.parse(data) console.log(body)
+      });
+    });
+
+    request.on('error', (error) => { 
+      console.log('An error', error);
+    });
+    
+    request.end();
 
 ## Default parameter [playground](playground/7-default-param.js)
 
@@ -170,14 +225,35 @@ This **asynchronous and non-blocking**å nature makes Node.js ideal for backend 
 
 ## Make HTTP requests
 
+        // There're several libraries for HTTP request
         const request = require('request');
 
         const url = '...';
 
         request({ url: url }, (error, response) => {
+            // Parse the response body from JSON string into JavaScript object
             const data = JSON.parse(response.body);
-            console.log(data.);
+            console.log(data.currently.temperature);
         });
+
+* Customize HTTP requests
+
+      // Set json option to true
+      request({ url: url, json: true }, (error, response) => {console.log(response.body.daily.data[0].summary + ' It is currently ' + response.body.currently.temperature + ' degrees out. There is a ' + response.body.currently.precipProbability + '% chance of rain.')});
+
+### Error Handling
+
+* Either **error** or **response** will have a value, never both. If error has a value, that means things went wrong. In this case, response will be **undefined**.
+
+      request({ url: geocodeURL, json: true }, (error, response) => { 
+        if (error) { 
+          console.log('Unable to connect to location services!') } 
+        else if (response.body.features.length === 0) { 
+          console.log('Unable to find location. Try another search.') } 
+        else {
+          // ...
+        } 
+      });
 
 ## Promise Chaining = return + multiple then()
 

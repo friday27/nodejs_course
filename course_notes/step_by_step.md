@@ -6,3 +6,6 @@
 
 3. Install nodemon `npm install -g nodemon` and other needed modules
 
+4. Install express `npm install express`
+
+5. Create [app.js](express.md) and set up routes
