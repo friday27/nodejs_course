@@ -9,3 +9,7 @@
 4. Install express `npm install express`
 
 5. Create [app.js](express.md) and set up routes
+
+6. [Set up MongoDB and Mongoose](mongodb_and_mongoose.md)
+
+[Deploy the repo on Heroku](server.md)

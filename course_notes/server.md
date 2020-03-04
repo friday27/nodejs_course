@@ -60,24 +60,34 @@ nodemon is a tool that helps develop node.js based applications by automatically
         //run script
         nodemon app.js
 
+## Crearing SSH keys
+
+SSH is the protocol used to securely transfer code between your machine and GitHub/Heroku.
+
+* Check existing SSH keys `ls -a -l ~/.ssh`
+
+* Create a new SSH key pair `ssh-keygen -t rsa -b 4096 -C "youremail`
+
+* Ensure the SSH agent is running `eval "$(ssh-agent -s)"`
+
+* Add the new SSH private key to the SSH agent `ssh-add -K ~/.ssh/id_rsa`
+
+* Dump the content of public SSH key to terminal `cat ~/.ssh/id_rsa.pub` Copy and paste the contents to the clip board and register the SSH key with GitHub.
+
 ## Deploying Node.js to Heroku (using Heroku CLI)
 
-1. `heroku login`
+The Heroku CLI gives you commands to deploy and manage your Node.js applications.
 
-2. `heroku keys:add` adds the public ssh key to heroku account
+There are 2 important settings to do for Heroku:
 
-3. `heroku create <project_name>`
+1. Heroku needs to know what command to run to start your app.
 
-4. Update package.json
-
+        // The start script in package.json is used to tell Heroku which command to run.
         "scripts": {
-            //Tell Heroku what to do to start up the application
             "start": "node src/app.js"
         }
 
-5. Run `npm run start` to test the change
-
-6. Update **port** in src/app.js
+2. Heroku requires your app to listen on a specific port.
 
         const port = process.env.PORT || 3000;
 
@@ -85,6 +95,16 @@ nodemon is a tool that helps develop node.js based applications by automatically
             //...
         });
 
-7. Push the changes to GitHub and Heroku
+### Steps to deploy NodeJS app on Heroku
 
-8. Check the result through Heroku URL
+1. `heroku login`
+
+2. `heroku keys:add` adds the public ssh key to heroku account
+
+3. Run `heroku create <project_name>` from the application root
+
+4. Run `npm run start` to test the change
+
+5. Push the changes to GitHub and Heroku
+
+6. Check the result through Heroku URL

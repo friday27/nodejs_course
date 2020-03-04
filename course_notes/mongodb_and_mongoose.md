@@ -1,8 +1,24 @@
 # [MongoDB](https://docs.mongodb.com/) and [Mongoose](https://mongoosejs.com/)
 
+## Set up and installation
+
+* [Install MongoDB](https://www.mongodb.com/download-center/community)
+
+  * Unzip, rename the folder to mongodb and move it to your home directory
+  * You can also create a directory called mongodb-data/ to store the database data
+  * Start MongoDB server by using `~/mongodb/bin/mongod --dbpath=~/mongodb-data --port=...`
+
+* [Install Robo 3T](https://robomongo.org) (a MongoDB admin tool)
+
+* Install MongoDB npm module `npm i mongodb`
+
+* Check [MongoDB driver documentation](https://mongodb.github.io/node-mongodb-native/3.5/api/)
+
+* Install Mongoose `npm i mongoose`
+
 ## MongoDB
 
-* SQL v.s NoSQL terms
+### SQL v.s NoSQL terms
 
         +------------+------------+
         | Table      | Collection |
@@ -12,142 +28,143 @@
         | Column     | Field      |
         +------------+------------+
 
-* Install [mongodb module](https://mongodb.github.io/node-mongodb-native/2.0/api/index.html) for Node.js
+### Connecting to MongoDB
 
-        npm i mongodb
+    const mongodb = require('mongodb');
+    const MongoClient = mongodb.MongoClient;
 
-* Start MongoDB
+    // default port: 27017
+    const connectionURL = 'mongodb://127.0.0.1:27017';
+    const databaseName = 'database-name';
 
-        mongodb/bin/mongod --dbpath=... --port=...
+    MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
+      if (error) {
+        return console.log('Unable to connect to database!');
+      }
 
-* [MongoDB GUI Viewer - Robo 3T](https://robomongo.org/download): Use JavaScript to manipulate MongoDB data
+      //MongoDB will create the db if not exists
+      const db = client.db(databaseName); 
 
-        db.version()
+      // Start to interact with the database
+    });
 
-### CRUD operations (mongodb.js)
+### Object IDs
 
-        const mongodb = require('mongodb');
-        const MongoClient = mongodb.MongoClient;
+MongoDB uses ObjectIDs to create unique identifiers for all the documents in the database.
 
-        const connectionURL = 'mongodb://127.0.0.1:port';
-        const databaseName = 'task-manager';
+An ObjectID is a GUID (Globally Unique Identifier). GUIDs are generated randomly via an algorithm to ensure uniqueness. These IDs can be generated on the server, but as seen in the snippet above, they can be generated on the client as well.
 
-        MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
-            if (error) {
-                return console.log('Unable to connect to database!');
-            }
+    //import ObjectID from mongodb module
+    const {MongoClient, ObjectID} = require('mongodb');
 
-            //MongoDB will create the db if not exists
-            const db = client.db(databaseName); 
+    //generate a new ID
+    const id = new ObjectID();
+    console.log(id);
+    console.log(id.getTimestamp());
 
-            //CRUD operations...
-        });
+### Inserting documents: [insertOne](https://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#insertOne) and [insertMany](https://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html#insertMany)
 
-#### [insertOne](https://mongodb.github.io/node-mongodb-native/2.0/api/Collection.html#insertOne) and insertMany
+db.collection is used to get a reference to the collection you’re trying to manipulate.
 
-        db.collection('users').insertOne({
-            name: 'Lily',
-            age: 13
-        });
+    db.collection('users').insertOne({
+      name: 'Lily',
+      age: 13
+    });
 
-        db.collection('users').insertMany([
-            {
-                name: 'Jane',
-                age: 28
-            }, {
-                name: 'Ross',
-                age: 27
-            }
-        ], (error, result) => {
-            if (error) {
-                return console.log('Unable to insert documents!');
-            }
-            console.log(result.ops);
-        });
+    db.collection('users').insertMany([
+      {
+        name: 'Jane',
+        age: 28
+      }, {
+        name: 'Ross',
+        age: 27
+      }], (error, result) => {
+        if (error) {
+          return console.log('Unable to insert documents!');
+        }
+          console.log(result.ops);
+    });
 
-* ObjectID
+### Querying documents: findOne and find
 
-        //import ObjectID from mongodb module
-        const {MongoClient, ObjectID} = require('mongodb');
+    db.collection('tasks').findOne({_id: new ObjectID('5e4bb3d487b1226d59221fdd')}, (error, result) => {
+      console.log(result);
+    });
 
-        //generate a new ID
-        const id = new ObjectID();
-        console.log(id);
-        console.log(id.getTimestamp());
+    //find returns a cursor
+    db.collection('users').find({name: 'Lily'}).toArray((error, result) => {
+      console.log(result);
+    });
 
-#### findOne and find
+    //replace toArray with count to get the length
+    db.collection('users').find({name: 'Lily'}).count((error, result) => {
+      console.log(result);
+    });
 
-        db.collection('tasks').findOne({_id: new ObjectID('5e4bb3d487b1226d59221fdd')}, (error, result) => {
-            console.log(result);
-        });
+### Updating documents: updateOne and updateMany
 
-        //find returns a cursor
-        db.collection('users').find({name: 'Lily'}).toArray((error, result) => {
-            console.log(result);
-        });
+The update calls require a second argument, which is an object where you define the updates you want to make. For this, you need to use one of the supported [update operators](https://docs.mongodb.com/manual/reference/operator/update/).
 
-        //replace toArray with count to get the length
-        db.collection('users').find({name: 'Lily'}).count((error, result) => {
-            console.log(result);
-        });
+    db.collection('users').updateOne({
+      _id: new ObjectID('5e4942f6e5b9e0531775390b')
+    }, {
+      $inc: { //MongoDB update operator
+        age: -5
+      }
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
 
-#### [updateOne and updateMany](https://docs.mongodb.com/manual/reference/operator/update/)
+    db.collection('tasks').updateMany({
+      completed: true
+    }, {
+      $set: {
+        completed: false
+      }
+    }).then((result) => {
+      console.log(result.modifiedCount);
+    }).catch((error) => {
+      console.log(error);
+    });
 
-        //updateOne returns a promise if no callback passed
-        db.collection('users').updateOne({
-            _id: new ObjectID('5e4942f6e5b9e0531775390b')
-        }, {
-            $inc: { //MongoDB update operator
-                age: -5
-            }
-        }).then((result) => {
-            console.log(result);
-        }).catch((error) => {
-            console.log(error);
-        });
+### Deleting documents: deleteOne and deleteMany
 
-        db.collection('tasks').updateMany({
-            completed: true
-        }, {
-            $set: {
-                completed: false
-            }
-        }).then((result) => {
-            console.log(result.modifiedCount);
-        }).catch((error) => {
-            console.log(error);
-        });
+deleteOne is used to delete a single docuemnt, the first one with matched conditions.
 
-#### [deleteOne and deleteMany]
+    db.collection('users').deleteOne({
+      name: 'Lily'
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
 
-        db.collection('users').deleteOne({
-            name: 'Lily'
-        }).then((result) => {
-            console.log(result);
-        }).catch((error) => {
-            console.log(error);
-        });
-
-        db.collection('users').deleteMany({
-            age: 30
-        }).then((result) => {
-            console.log(result);
-        }).catch((error) => {
-            console.log(error);
-        });
-
+    db.collection('users').deleteMany({
+      age: 30
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
 -----
 
 ## [Mongoose](https://mongoosejs.com/)
 
-        //mongoose uses mongodb module
-        const mongoose = require('mongoose');
+Mongoose serves as a replacement for the native driver, providing you with a more object-oriented interface.
 
-        //provide the db name as part of the connection URL
-        mongoose.connect('mongodb://127.0.0.1:27018/task-manager-api', {
-            useNewUrlParser: true,
-            useCreateIndex: true
-        });
+### Connecting to MongoDB using Mongoose
+
+    const mongoose = require('mongoose');
+
+    //provide the db name as part of the connection URL
+    mongoose.connect('mongodb://127.0.0.1:port/database-name', {
+        useNewUrlParser: true,
+        useCreateIndex: true
+    });
+
+### Creating models
 
         //create and User model
         // {'name for your model', {definition}}

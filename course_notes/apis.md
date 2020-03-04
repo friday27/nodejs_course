@@ -1,4 +1,6 @@
-# RESTful API (Representational State Transfer - Application Programming Interface)
+# APIs
+
+## RESTful API (Representational State Transfer - Application Programming Interface)
 
 The REST API allows client such as web application to access and manipulate resources using a set of predefined operations.
 

@@ -53,3 +53,33 @@
     const publicDir = path.join(__dirname, '../public');
 
     app.use(express.static(publicDirectoryPath));
+
+## 404 Pages
+
+Express has support for * in route paths. This is a special character which matches anything.
+
+The 404 page should be set up just before the call to app.listen. This ensures that requests for valid pages still get the correct response.
+
+    app.get('*', (req, res) => { 
+      res.render('404', {
+        title: '404',
+        name: 'Andrew Mead', 
+        errorMessage: 'Page not found.'
+      });
+    });
+
+## [Express Request Object (req)](https://expressjs.com/en/api.html#req)
+
+The **req** object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
+
+### Some Properties
+
+* req.body: contains key-value pairs of data submitted in the request body
+
+* req.params: an object containing properties mapped to the [route parameters](https://expressjs.com/en/guide/routing.html#route-parameters). For example, if you have the route /user/:name, then the "name" property is available as req.params.name. This object defaults to {}.
+
+* req.query
+
+      // GET /search?q=harry+potter
+      console.log(req.query.q);
+      // 'harry potter'
