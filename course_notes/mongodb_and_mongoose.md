@@ -265,3 +265,43 @@ Simply set timestamps option of schema to true:
     }, {
         timestamps: true
     });
+
+### Fetching Data
+
+* Filtering Data: Use **match** property of populate() to filter data
+
+* Paginating Data: Data pagination is configured using limit and skip. **skip** represents the number of records (not pages) you are going to skip.
+
+* Sorting Data: The options object used for pagination can also be used for sorting. A sort property should be set, which is an object containing key/value pairs. The key is the field to sort. The value is 1 for ascending and -1 for descending sorting.
+
+src/routers/task.js
+
+    // GET /tasks?completed=false&limit=10&skip=2&sortBy=createdAt:desc
+    router.get('/tasks', auth, async (req, res) => {
+      const match = {}; // empty object
+      const sort = {};
+
+      if (req.query.completed) {
+        match.completed = req.query.completed === 'true';
+      }
+
+      if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+      }
+
+      try {
+        await req.user.populate({
+          path: 'tasks',
+          match, //shorthand
+          options: {
+            limit: parseInt(req.query.limit),
+            skip: parseInt(req.query.skip),
+            sort // 1: asc, -1: desc
+          }
+        }).execPopulate();
+        res.send(req.user.tasks);
+      } catch (e) {
+        res.status(500).send(e);
+      }
+    });
