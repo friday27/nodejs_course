@@ -8,8 +8,12 @@
 
 4. Install express `npm install express`
 
-5. Create [app.js](express.md) and set up routes
+5. Create [app.js](express.md) and set up routes in src/routers/
 
-6. [Set up MongoDB and Mongoose](mongodb_and_mongoose.md)
+6. [Set up MongoDB, Mongoose and create models in src/models/](mongodb_and_mongoose.md)
+
+Install Postman for API testing
 
 [Deploy the repo on Heroku](server.md)
+
+[API Authentication and Security](authentication_and_security.md)

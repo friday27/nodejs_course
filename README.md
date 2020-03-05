@@ -2,17 +2,25 @@
 
 ## TODOs
 
-* To review
-  * Google style sheet
-  * When to user async and await?
-  * Know more about req
-  * Course PDF
-  * 30 Call Stack, Callback Queue and Event Loop
-  * 65 Setting up SSH keys
+* Create a REST API
+  * US stock prices tracker
+  * Expenses tracker
+  * Friends tracker
+  * 復古留言板
+  * [More ideas](https://flaviocopes.com/sample-app-ideas/)
+    * An Instagram client
+      * Enter an hashtag and get the latest posts
+      * Enter a username and get the latest posts
+      * Allow to store one or more hashtags/usernames and get all the latest posts from those
+
+* Learn how to make an one-page website
+
+* Learn how to make your APIs better (coding style, performance, database...)
+  * [7 Tips for Designing a Better REST API](https://www.kennethlange.com/7-tips-for-designing-a-better-rest-api/)
 
 * Create "How to build an RESTful API - step by step" page in 2 languages
 
-* Create gitbook (notes)
+* Create gitbook (notes) ?
 
 * Codelab
   * [Build your first PWA](https://codelabs.developers.google.com/codelabs/your-first-pwapp/#0)
@@ -53,11 +61,14 @@
 * [About Backend Developer](./course_notes/backend_developer.md)
 * [JavaScript Basics 1: Syntax](./course_notes/js_basics1.md)
 * [JavaScript Basics 2](./course_notes/js_basics2.md)
-* [Server set up](./course_notes/server.md)
+* [Server Set Up](./course_notes/server.md)
+* [Express](./course_notes/express.md)
+* [HTML Manipulation](./course_notes/html_manipulation.md)
+* [Styling and Templating](./course_notes/styling_and_templating.md)
 * [Configuration](./course_notes/config.md)
 * [Quality Assurance](./course_notes/qa.md)
 * [MongoDB and Mongoose](./course_notes/mongodb.md)
-* [RESTful API](./course_notes/restful_api.md)
+* [APIs](./course_notes/apis.md)
 * [Authentication and Security](./course_notes/authentication_and_security.md)
 
 ## Reference

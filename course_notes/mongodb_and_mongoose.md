@@ -148,6 +148,7 @@ deleteOne is used to delete a single docuemnt, the first one with matched condit
     }).catch((error) => {
       console.log(error);
     });
+
 -----
 
 ## [Mongoose](https://mongoosejs.com/)
@@ -164,75 +165,92 @@ Mongoose serves as a replacement for the native driver, providing you with a mor
         useCreateIndex: true
     });
 
-### Creating models
+### Modeling your data
 
-        //create and User model
-        // {'name for your model', {definition}}
-        // Mongoose provides a basic type validation
-        const User = mongoose.model('User', {
-            name: {
-                type: String
-            },
-            age: {
-                type: Number
-            }
-        });
+The core feature of Mongoose is the ability to model your data.
 
-        //model instance
-        const me = new User({
-            name: 'Andrew Ng', 
-            age: 27
-        });
+    // Mongoose provides a basic type validation
+    const User = mongoose.model('User', {
+      name: {
+        type: String
+      },
+      age: {
+        type: Number
+      }
+    });
 
-        //save the instance to the db (return a promise)
-        me.save().then(() => {
-            console.log(me);
-        }).catch((error) => {
-            console.log('Error!', error);
-        });
+    //model instance
+    const me = new User({
+      name: 'Andrew Ng', 
+      age: 27
+    });
 
-## [Data validation and sanitization](https://mongoosejs.com/docs/schematypes.html)
+    //save the instance to the db (return a promise)
+    me.save().then(() => {
+      console.log(me);
+    }).catch((error) => {
+      console.log('Error!', error);
+    });
 
-        const User = mongoose.model('User', {
-            name: {
-                type: String,
-                required: true,
-                trim: true
-            },
-            age: {
-                type: Number,
-                default: 0,
-                //custom validator for a field
-                validate(value) { //value -> the input of age
-                    if (value < 0) {
-                        throw new Error('Age must be a postive number!');
-                    }
-                }
-            },
-            email: {
-                type: String,
-                required: true,
-                trim: true,
-                lowercase: true,
-                validate(value) {
-                    //use validator module
-                    if (!validator.isEmail(value)) {
-                        throw new Error('Email is invalid.');
-                    }
-                }
-            },
-            password: {
-                type: String,
-                required: true,
-                minlength: 7,
-                trim: true,
-                validate(value) {
-                    if (value.toLowerCase().includes('password')) {
-                        throw new Error('Do not use "password" in password.');
-                    }
-                }
-            }
-        });
+### Data validation and sanitization
+
+Validation will allow you to restrict what data can be stored in the database, while sanitization will allow you to store user data in a uniform and standardized way.
+
+You can find the list of options from the [schema documetation](https://mongoosejs.com/docs/schematypes.html).
+
+    // Install and import validator library to achieve data validation efficiently
+    const validator = require('validator');
+
+    const User = mongoose.model('User', {
+      name: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      age: {
+        type: Number,
+        default: 0,
+        //custom validator for a field
+        validate(value) { //value -> the input of age
+          if (value < 0) {
+            throw new Error('Age must be a postive number!');
+          }
+        }
+      },
+      email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+          //use validator module
+          if (!validator.isEmail(value)) {
+            throw new Error('Email is invalid.');
+          }
+        }
+      },
+      password: {
+        type: String,
+        required: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+          if (value.toLowerCase().includes('password')) {
+            throw new Error('Do not use "password" in password.');
+          }
+        }
+      }
+    });
+
+### Mongoose static method v.s. instance method
+
+**statics** are the methods defined on the Model. Use statics method when you want to search the whole collection. (e.g. find a matching email in User collection)
+
+**methods** are defined on the document (instance). Use instance method when you want to narrow down to a specific target. (e.g. generate JWT for a user)
+
+You cannot use statics method on an instance, vise versa.
+
+-----
 
 ## Sorting, Pagination, and Filtering
 
