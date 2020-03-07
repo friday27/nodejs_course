@@ -305,3 +305,32 @@ src/routers/task.js
         res.status(500).send(e);
       }
     });
+
+-----
+
+## File Uploads
+
+Use npm library **multer** for file uploading.
+
+    const multer = require('multer');
+
+    const upload = multer({
+        dest: 'avatars', // from the project root dir
+        limits: {
+            fileSize: 1000000 //1MB 
+        },
+        fileFilter(req, file, cb) {
+            // Examine if the file format using regex
+            // cb: call back function
+            if (!file.originalname.match('\.(jpg|jpeg|png)$')) {
+                return cb(new Error('Please upload an image (jpg, jpeg or png).'));
+            }
+            cb(undefined, true);
+        }
+    });
+
+    router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+        res.send();
+    });
+
+* Use [regex101](https://regex101.com/) to test regular expression
