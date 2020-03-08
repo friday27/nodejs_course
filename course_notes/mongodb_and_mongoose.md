@@ -334,3 +334,66 @@ Use npm library **multer** for file uploading.
     });
 
 * Use [regex101](https://regex101.com/) to test regular expression
+
+### Adding images to user profile
+
+1. Add authentication
+2. Add avatar property to user model. The Buffer type should be used when storing binary data, which is exactly the type of data that multer provides.
+
+       const userSchema = new mongoose.Schema({
+         // ...some code
+         , avatar: {
+           type: Buffer
+         }
+       };
+
+3. Save the image to database
+
+       const upload = multer({
+          // Hide this line so the image will be passed to the function inside router (req.file.buffer)
+          // dest: 'avatars', // from the project root dir
+          // ...some code...
+        });
+
+        router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+          req.user.avatar = req.file.buffer;
+          await req.user.save();
+          res.send();
+        }, (error, req, res, next) => { 
+          // Express error handling
+          res.status(400).send({error: error.message});
+        });
+
+### Serving up files
+
+Serving up the user avatars will require two pieces of data from the server. The first is the image data, and the second is the header.
+
+    router.get('/users/:id/avatar', async (req, res) => {
+      try {
+        const user = await User.findById(req.params.id);
+
+        if (!user || !user.avatar) {
+          throw new Error();
+        }
+
+        res.set('Content-Type', 'image/jpg');
+        res.send(user.avatar);
+      } catch (e) {
+        res.status(404).send(e);
+      }
+    });
+
+### Auto-Cropping and Image Formatting (Using sharp library)
+
+    router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+        // resize all uploads to 250 by 250 pixels
+        // convert all images to portable network graphics (png)
+        const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
+        
+        req.user.avatar = buffer;
+        await req.user.save();
+        res.send();
+    }, (error, req, res, next) => { 
+        // Express error handling
+        res.status(400).send({error: error.message});
+    });
