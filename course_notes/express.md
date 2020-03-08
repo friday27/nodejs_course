@@ -83,3 +83,14 @@ The **req** object represents the HTTP request and has properties for the reques
       // GET /search?q=harry+potter
       console.log(req.query.q);
       // 'harry potter'
+
+## Express Error Handling
+
+You can handle errors from **middleware function** by providing a function to Express. As shown below, a new function is passed as the final argument to router.post. This function accepts **error, req, res, and next**. This call signature lets Express know the function is designed to handle errors.
+
+    router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+        res.send();
+    }, (error, req, res, next) => { 
+        // Express error handling
+        res.status(400).send({error: error.message});
+    });

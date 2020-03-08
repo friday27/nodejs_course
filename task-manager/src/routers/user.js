@@ -65,6 +65,9 @@ const upload = multer({
 
 router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
     res.send();
+}, (error, req, res, next) => { 
+    // Express error handling
+    res.status(400).send({error: error.message});
 });
 
 //put 'auth' middleware function as the second argument
