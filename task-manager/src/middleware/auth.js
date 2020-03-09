@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '');
 
         //verify if it's an legal token
-        const decoded = jwt.verify(token, 'thisismynewcourse');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         //verify if the token is still in the db
         const user = await User.findOne({_id: decoded._id, 'tokens.token': token});

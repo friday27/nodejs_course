@@ -108,3 +108,12 @@ There are 2 important settings to do for Heroku:
 5. Push the changes to GitHub and Heroku
 
 6. Check the result through Heroku URL
+
+## Creating a Production MongoDB Database
+
+1. Get a MongoDB Atlas free account and create a cluster
+
+    * IP Address: 0.0.0.0/0
+    * Install MongoDB Compass (~ Robo3T)
+
+2. Open MongoDB Compass Community and connect to (1) localhost:port, (2) the cluster

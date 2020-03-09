@@ -247,3 +247,22 @@ To automatically delete tasks when the user is removed, we only need to add a mi
       await Task.deleteMany({owner: user._id});
       next();
     });
+
+## Use Environment Variables to Avoid Hard-Coding API Key/Token
+
+1. Install npm module `npm i env-cmd --save-dev`
+2. Set environment variables in config/dev.env
+
+      PORT=3000
+      SENDGRID_API_KEY=...
+      JWT_SECRET=thisismynewcourse
+      MONGODB_URL=mongodb://127.0.0.1:27018/task-manager-api
+
+3. Replace hard-coded variables with env variables
+
+4. Update package.json
+
+      "scripts": {
+        // some code ...
+        "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
+      },
