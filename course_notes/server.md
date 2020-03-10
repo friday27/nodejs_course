@@ -109,7 +109,7 @@ There are 2 important settings to do for Heroku:
 
 6. Check the result through Heroku URL
 
-## Creating a Production MongoDB Database
+## Creating a Production MongoDB Database and Deploying on Heroku
 
 1. Get a MongoDB Atlas free account and create a cluster
 
@@ -117,3 +117,13 @@ There are 2 important settings to do for Heroku:
     * Install MongoDB Compass (~ Robo3T)
 
 2. Open MongoDB Compass Community and connect to (1) localhost:port, (2) the cluster
+
+3. Git push to GitHub and Heroku (after `heroku login`, `heroku create <project-name>`)
+
+4. Use `heroku config:set <key>=<value>` to set environment variables for Heroku. ()
+
+    For MONGODB_URL, go MongoDB Compass webpage and get the connection string for connecting to application. `heroku config:set MONGODB_URL='...'`
+
+    Use `heroku config:unset <key>=<value>` to remove it, and `heroku config` to check environment variables.
+
+5. Set the newly created Heroku URL to the env variable **url** in Postman prod env.

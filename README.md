@@ -2,6 +2,8 @@
 
 ## TODOs
 
+* Debugging: Deploying task manager to Heroku
+
 * Create a REST API
   * US stock prices tracker
   * Expenses tracker
