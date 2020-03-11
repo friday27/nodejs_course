@@ -10,21 +10,28 @@ The Most 2 Popular Testing Frameworks: [Jest](jestjs.io) (We are going to use Je
 
        "scripts": {
          // ...
-         "test": "jest"
+         "test": "jest --watch"
        },
 
 3. Run test by `npm test`
 
 ## Create Test Suites
 
-Create tests/test-name.test.js
+Jest provides some function as global in all test suites:
 
-    test('Test Suite Name', () => {
-        // test function
+* test('Test case description', function)
+* [expect()](https://jestjs.io/docs/en/expect)
+
+Create test suites in tests/test-name.test.js
+
+    test('Should calculate total with default tip', () => {
+        const total = calTip(10);
+        expect(total).toBe(12); // assertion
     });
 
-    test('2nd Test Suite', () => {
-        // ...
-    });
+## Testing Asynchronous Code Using async/await
 
-Jest provides the function named test as global in all test suites.
+    test('Should add 2 numbers async/await', async () => {
+        const sum = await add(10, 17);
+        expect(sum).toBe(27);
+    });
