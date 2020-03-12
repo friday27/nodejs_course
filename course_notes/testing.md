@@ -29,9 +29,66 @@ Create test suites in tests/test-name.test.js
         expect(total).toBe(12); // assertion
     });
 
-## Testing Asynchronous Code Using async/await
+### Test Asynchronous Code Using async/await
 
     test('Should add 2 numbers async/await', async () => {
         const sum = await add(10, 17);
         expect(sum).toBe(27);
     });
+
+## Test an Expression Application
+
+### Create a test environment
+
+config/test.env (to prevent the test cases from messing with development data)
+
+    MONGODB_URL=mongodb://localhost:port/app-name-test
+
+package.json
+
+    "scripts": {
+      // ...
+      "test": "env-cmd -f ./condig/test.env jest --watch"
+    },
+    "jest": { // jest configuration
+      "testEnvironment": "node"
+    },
+
+## Test with supertest library
+
+1. Restructure index.js and app.js (newly created) so we can test the server without starting (app.listen) it.
+
+       // index.js
+       const app = require('./app');
+       const port = process.env.PORT;
+
+       app.listen(port, () => {
+         console.log('Server is up! on port ' + port);
+       });
+
+
+       // app.js
+       const express = require('express');
+       require('./db/mongoose');
+       const userRouter = require('./routers/user');
+       const taskRouter = require('./routers/task');
+
+       const app = express();
+
+       app.use(express.json()); 
+       app.use(userRouter);
+       app.use(taskRouter);
+
+       module.exports = app;
+
+2. Install the module `npm i supertest`
+3. Create test cases ([example: user.test.js](../task-manager/tests/user.test.js))
+
+### Seeding Database
+
+Jest provides lifecycle functions that you can use to configure your test suite. There are 4:
+
+1. beforeEach - Run some code before each test case
+2. afterEach - Run some code after each test case
+3. before - Run some code once before the tests run
+4. after - Run some code once after the tests run
