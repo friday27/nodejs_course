@@ -2,7 +2,9 @@
 
 ## TODOs
 
-* Debugging: Deploying task manager to Heroku
+* Review auth
+
+* Complete task.test.js
 
 * Create a REST API
   * US stock prices tracker
@@ -14,8 +16,6 @@
       * Enter an hashtag and get the latest posts
       * Enter a username and get the latest posts
       * Allow to store one or more hashtags/usernames and get all the latest posts from those
-
-* Learn how to make an one-page website
 
 * Learn how to make your APIs better (coding style, performance, database...)
   * [7 Tips for Designing a Better REST API](https://www.kennethlange.com/7-tips-for-designing-a-better-rest-api/)

@@ -47,8 +47,8 @@ config/test.env (to prevent the test cases from messing with development data)
 package.json
 
     "scripts": {
-      // ...
-      "test": "env-cmd -f ./condig/test.env jest --watch"
+      // --runInBand makes sure to run test suites in series to prevent conflicts
+      "test": "env-cmd -f ./config/test.env jest --watch --runInBand"
     },
     "jest": { // jest configuration
       "testEnvironment": "node"
@@ -82,7 +82,13 @@ package.json
        module.exports = app;
 
 2. Install the module `npm i supertest`
-3. Create test cases ([example: user.test.js](../task-manager/tests/user.test.js))
+3. Create neccessary files and folders:
+
+    * Mocking libraried - tests/__mocks__/@sendgrid/mails.js
+    * Database config - tests/fixtures/db.js
+    * Images for testing - tests/fixtures/profile-pic.jpg
+
+4. Create test cases ([example: user.test.js](../task-manager/tests/user.test.js))
 
 ### Seeding Database
 
@@ -92,3 +98,8 @@ Jest provides lifecycle functions that you can use to configure your test suite.
 2. afterEach - Run some code after each test case
 3. before - Run some code once before the tests run
 4. after - Run some code once after the tests run
+
+## Mocking Library
+
+Take `require('@sendgrid/mail');` for example.
+To mock this module, create a file `tests/__mocks__/@sengrid/mail.js` so this can prevent sending emails while testing.
