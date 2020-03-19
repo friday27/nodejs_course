@@ -5,9 +5,24 @@ const $messageForm = document.querySelector('#msg-form');
 const $messageFormInput = $messageForm.querySelector('input');
 const $messageFormButton = $messageForm.querySelector('button');
 const $locationButton = document.querySelector('#send-location');
+const $messages = document.querySelector('#messages');
+
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML;
+const urlTemplate = document.querySelector('#url-template').innerHTML;
 
 socket.on('message', (message) => {
-    console.log(message);
+    const html = Mustache.render(messageTemplate, {
+        message
+    });
+    $messages.insertAdjacentHTML('beforeend', html);
+});
+
+socket.on('locationMessage', (url) => {
+    const html = Mustache.render(urlTemplate, {
+        url
+    });
+    $messages.insertAdjacentHTML('beforeend', html);
 });
 
 $messageForm.addEventListener('submit', (e) => {
@@ -41,8 +56,7 @@ $locationButton.addEventListener('click', (e) => {
             longitude: position.coords.longitude
         }, () => {
             $locationButton.removeAttribute('disabled');
-            console.log('Location shared!');
+            // console.log('Location shared!');
         });
     });
 });
-

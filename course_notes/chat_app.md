@@ -37,3 +37,47 @@ server (emit) -> client (receive) --acknowledgement--> server
 client (emit) -> server (receive) --acknowledgement--> server
 
 Acknowledgement is optional. You should set it as the last parameter of emit() as a callback function, so receiver can use this callback function to let sender know the acknowledgement is received.
+
+## Rendering Messages through Mustache
+
+Create a JavaScript block in index.html and include mustache. You shoule use different templates for different HTML elements (e.g. plain text and link).
+
+    <div id="messages"></div>
+        
+    <script id="message-template" type="text/html">
+        <div>
+            <p>This is a message.</p>    
+        </div>
+    </script>
+
+    <script id="url-template" type="text/html">
+        <div>
+            <p><a href="{{url}}" target="_blank">My current location</a></p>    
+        </div>
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+
+In chat.js, grap the element and templates, then render and insert dynamic html.
+
+    // Elements
+    const $messages = document.querySelector('#messages');
+
+    // Templates
+    const messageTemplate = document.querySelector('#message-template').innerHTML;
+
+    const urlTemplate = document.querySelector('#url-template').innerHTML;
+
+    socket.on('message', (message) => {
+        const html = Mustache.render(messageTemplate, {
+            message
+        });
+        $messages.insertAdjacentHTML('beforeend', html);
+    });
+
+    socket.on('locationMessage', (url) => {
+        const html = Mustache.render(urlTemplate, {
+            url
+        });
+        $messages.insertAdjacentHTML('beforeend', html);
+    });
