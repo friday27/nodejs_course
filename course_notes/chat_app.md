@@ -81,3 +81,13 @@ In chat.js, grap the element and templates, then render and insert dynamic html.
         });
         $messages.insertAdjacentHTML('beforeend', html);
     });
+
+## Integrating Time into App with [Moment.js](https://momentjs.com/) ([doc](https://momentjs.com/docs/))
+
+Grap the script tag in index.html
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+Call moment directly in your client JS files
+
+    const time = moment(message.createdAt).format('hh:mm a');

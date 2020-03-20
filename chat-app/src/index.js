@@ -3,6 +3,7 @@ const http = require('http'); // Import http module
 const express = require('express');
 const socketio = require('socket.io');
 const Filter = require('bad-words');
+const {generateMsg, generateLocationMsg} = require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,10 +26,12 @@ app.use(express.static(publicDir));
 */
 
 io.on('connection', (socket) => {
-    socket.emit('message', 'Welcome!');
+    console.log('New WebSocket connection');
+
+    socket.emit('message', generateMsg('Welcome!'));
 
     // Send it to everyone expect this socket
-    socket.broadcast.emit('message', 'A new user has joined!');
+    socket.broadcast.emit('message', generateMsg('A new user has joined!'));
 
     socket.on('sendMessage', (msg, callback) => {
         const filter = new Filter();
@@ -37,18 +40,18 @@ io.on('connection', (socket) => {
             return callback('Profanity is not allowed!');
         }
 
-        io.emit('message', msg);
+        io.emit('message', generateMsg(msg));
         callback();
     });
 
     socket.on('sendLocation', (coords, callback) => {
-        io.emit('locationMessage', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
+        io.emit('locationMessage', generateLocationMsg(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
         callback();
     });
 
     socket.on('disconnect', () => {
         // Not using socket.emit() as the connection is already closed.
-        io.emit('message', 'A user has left ~');
+        io.emit('message', generateMsg('A user has left ~'));
     });
 });
 
