@@ -91,3 +91,25 @@ Grap the script tag in index.html
 Call moment directly in your client JS files
 
     const time = moment(message.createdAt).format('hh:mm a');
+
+## Socket.io Rooms
+
+1. Grap the script tag in index.html
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+
+2. In your client JS files (chat.js), user Qs to parse the query string
+
+       const {username, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
+       
+       socket.emit('join', {username, room});
+
+3. In your server code
+
+       socket.on('join', ({username, room}) => {
+            socket.join(room);
+            socket.emit('message', generateMsg('Welcome!'));
+            socket.broadcast.to(room).emit('message', generateMsg(`${username} has joined!`));
+       });
+
+4. To avoid emit new message to all rooms, replace `io.emit()` with `io.to(room).emit()` in index.js
