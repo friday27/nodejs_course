@@ -43,25 +43,31 @@ io.on('connection', (socket) => {
 
         // io.to.emit: emit to everyone in a specific room
         // socket.broadcast.to.emit: like above but not emit to the current user
-        socket.emit('message', generateMsg('Welcome!'));
-        socket.broadcast.to(user.room).emit('message', generateMsg(`${user.username} has joined!`));
+        socket.emit('message', generateMsg('Admin', 'Welcome!'));
+        socket.broadcast.to(user.room).emit('message', generateMsg('Admin', `${user.username} has joined!`));
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
         
         callback(); // no argument = no error
     });
 
     socket.on('sendMessage', (msg, callback) => {
+        const user = getUser(socket.id);
         const filter = new Filter();
 
         if (filter.isProfane(msg)) {
             return callback('Profanity is not allowed!');
         }
 
-        io.to('room1').emit('message', generateMsg(msg));
+        io.to(user.room).emit('message', generateMsg(user.username, msg));
         callback();
     });
 
     socket.on('sendLocation', (coords, callback) => {
-        io.to('room1').emit('locationMessage', generateLocationMsg(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
+        const user = getUser(socket.id);
+        io.to(user.room).emit('locationMessage', generateLocationMsg(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
         callback();
     });
 
@@ -70,7 +76,11 @@ io.on('connection', (socket) => {
 
         if (user) {
             // Not using socket.emit() as the connection is already closed.
-            io.to(user.room).emit('message', generateMsg(`${user.username} has left ~`));
+            io.to(user.room).emit('Admin', generateMsg('System', `${user.username} has left ~`));
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
         }
     });
 });

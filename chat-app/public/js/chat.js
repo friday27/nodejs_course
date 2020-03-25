@@ -10,26 +10,63 @@ const $messages = document.querySelector('#messages');
 // Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const urlTemplate = document.querySelector('#url-template').innerHTML;
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 // Options
 const {username, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
 
-socket.on('message', (message) => {
-    console.log(message);
+const autoscroll = () => {
+    // New message element
+    const $newMsg = $messages.lastElementChild;
+
+    // Height of the last message
+    const newMsgStyles = getComputedStyle($newMsg); // Find margin value
+    const newMsgMargin = parseInt(newMsgStyles.marginBottom);
+    const newMsgHeight = $newMsg.offsetHeight + newMsgMargin;
+
+    // Visible height
+    const visibleHeight = $messages.offsetHeight;
+
+    // Height of message container
+    const containerHeight = $messages.scrollHeight;
+
+    // How far have I scroll
+    const scrollOffset = $messages.scrollTop + visibleHeight;
+
+    // Make sure we are in the bottom before the message is added
+    if (containerHeight - newMsgHeight <= scrollOffset) {
+        $messages.scrollTop = $messages.scrollHeight;
+    }
+};
+
+socket.on('message', (msgObj) => {
+    console.log(msgObj);
     const html = Mustache.render(messageTemplate, {
-        createdAt: moment(message.createdAt).format('hh:mm a'),
-        message: message.text
+        username: msgObj.username,
+        createdAt: moment(msgObj.createdAt).format('hh:mm a'),
+        message: msgObj.text
     });
     $messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 });
 
-socket.on('locationMessage', (url) => {
-    console.log(url);
+socket.on('locationMessage', (urlObj) => {
+    console.log(urlObj);
     const html = Mustache.render(urlTemplate, {
-        createdAt: moment(url.createdAt).format('hh:mm a'),
-        url: url.url
+        username: urlObj.username,
+        createdAt: moment(urlObj.createdAt).format('hh:mm a'),
+        url: urlObj.url
     });
     $messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
+});
+
+socket.on('roomData', ({room, users}) => {
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users
+    });
+    document.querySelector('#sidebar').innerHTML = html;
 });
 
 $messageForm.addEventListener('submit', (e) => {
