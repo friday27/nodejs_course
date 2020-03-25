@@ -76,7 +76,8 @@ io.on('connection', (socket) => {
 
         if (user) {
             // Not using socket.emit() as the connection is already closed.
-            io.to(user.room).emit('Admin', generateMsg('System', `${user.username} has left ~`));
+            // io.to(user.room).emit('Admin', generateMsg('Admin', `${user.username} has left ~`));
+            socket.broadcast.to(user.room).emit('message', generateMsg('Admin', `${user.username} has left ~`));
             io.to(user.room).emit('roomData', {
                 room: user.room,
                 users: getUsersInRoom(user.room)

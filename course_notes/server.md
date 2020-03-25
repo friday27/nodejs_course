@@ -101,13 +101,11 @@ There are 2 important settings to do for Heroku:
 
 2. `heroku keys:add` adds the public ssh key to heroku account
 
-3. Run `heroku create <project_name>` from the application root
+3. Create Heroku project by `heroku create <project_name>` from the application root (You can always add your username before project name e.g. `heroku create friday27-chat-app`). Add the repo `heroku git:remote -a <project_name>` if neccessary.
 
 4. Run `npm run start` to test the change
 
-5. Push the changes to GitHub and Heroku
-
-6. Check the result through Heroku URL
+5. Push the changes to GitHub and Heroku, and check result through Heroku URL
 
 ## Creating a Production MongoDB Database and Deploying on Heroku
 
