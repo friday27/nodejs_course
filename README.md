@@ -4,62 +4,27 @@
 
 * Review auth
 
-* Complete task.test.js
-
 * New feature ideas
   * Weather App: Allow users to click a button and get weather forecast of the current location
   * Todo App: Allow users to upload images for indivisual todos
   * Chat App: Let users pick from list of active rooms or type in custom room name
 
-* Create a REST API
-  * US stock prices tracker
-  * Vocabulary reminder
-  * Project 333
-
-  * Expenses tracker
-  * Friends tracker
-  * 復古留言板
-  * [More ideas](https://flaviocopes.com/sample-app-ideas/)
-    * An Instagram client
-      * Enter an hashtag and get the latest posts
-      * Enter a username and get the latest posts
-      * Allow to store one or more hashtags/usernames and get all the latest posts from those
-
 * Learn how to make your APIs better (coding style, performance, database...)
   * [7 Tips for Designing a Better REST API](https://www.kennethlange.com/7-tips-for-designing-a-better-rest-api/)
   * [Find and Fix Web App Performance Issues](https://developers.google.com/web/fundamentals/codelabs/web-perf/)
 
-* Create "How to build an RESTful API - step by step" page in 2 languages
+## Projects
 
-* Create gitbook (notes) ?
+* Task Manager RESTful API
+  * review
+  * work on [this repo](https://github.com/friday27/task-manager-api)
+  * RESTful
+  * combine it with [TodoList](https://github.com/friday27/WebDeveloperBasics/tree/master/SmallProjects/TodoList)
+  * deploy it on Heroku
 
-* Start side projects
-  * Follow tutorials to build Twitter/Pinterest/Instagram/...
-  * [8 Steps to Building an App from Scratch by Codementor](https://tinyurl.com/tajj522)
-  * [https://www.freecodecamp.org/forum/t/how-to-get-started-with-freecodecamps-legacy-back-end-projects/19473](https://www.freecodecamp.org/forum/t/how-to-get-started-with-freecodecamps-legacy-back-end-projects/19473)
-  * [https://www.quora.com/What-project-would-you-suggest-to-do-for-a-back-end-developer-to-practice](https://www.quora.com/What-project-would-you-suggest-to-do-for-a-back-end-developer-to-practice)
-
-## Skills
-
-* JavaScript and NodeJS
-* Express.js
-* MySQL
-* MongoDB
-* RESTful API
-* Testing (unit and integration test)
-* OAuth, JWT...
-* Message Broker (RabbitMQ, Kafka)
-* Search Engine (ElasticSearch)
-* Docker
-* Web servers (diff, allocation)
-* WebSocket
-* GraphQL
-* More
-  * HTTP, TCP
-  * Heroku, AWS
-  * Redis, Memcached
-  * Nginx
-  * Microservices, Serverless
+* Line ChatBot review
+* Chat App
+* Weather App
 
 ## Notes
 
